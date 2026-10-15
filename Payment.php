@@ -1,6 +1,6 @@
 <?php
 
-namespace Faker\Provider\it_IT;
+namespace Faker\Provider\ro_RO;
 
 class Payment extends \Faker\Provider\Payment
 {
@@ -15,7 +15,7 @@ class Payment extends \Faker\Provider\Payment
      *
      * @return string
      */
-    public static function bankAccountNumber($prefix = '', $countryCode = 'IT', $length = null)
+    public static function bankAccountNumber($prefix = '', $countryCode = 'RO', $length = null)
     {
         return static::iban($countryCode, $prefix, $length);
     }
