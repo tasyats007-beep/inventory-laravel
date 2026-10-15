@@ -1,9 +1,11 @@
 <?php
 
-namespace Faker\Provider\bg_BG;
+namespace Faker\Provider\es_ES;
 
 class Payment extends \Faker\Provider\Payment
 {
+    private static $vatMap = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'N', 'P', 'Q', 'R', 'S', 'U', 'V', 'W'];
+
     /**
      * International Bank Account Number (IBAN)
      *
@@ -15,7 +17,7 @@ class Payment extends \Faker\Provider\Payment
      *
      * @return string
      */
-    public static function bankAccountNumber($prefix = '', $countryCode = 'BG', $length = null)
+    public static function bankAccountNumber($prefix = '', $countryCode = 'ES', $length = null)
     {
         return static::iban($countryCode, $prefix, $length);
     }
@@ -23,24 +25,18 @@ class Payment extends \Faker\Provider\Payment
     /**
      * Value Added Tax (VAT)
      *
-     * @example 'BG1234567890', ('spaced') 'BG 1234567890'
+     * @example 'B93694545'
      *
-     * @see http://ec.europa.eu/taxation_customs/vies/faq.html?locale=en#item_11
-     * @see http://en.wikipedia.org/wiki/VAT_identification_number
-     *
-     * @param bool $spacedNationalPrefix
+     * @see https://en.wikipedia.org/wiki/VAT_identification_number
+     * @see https://es.wikipedia.org/wiki/C%C3%B3digo_de_identificaci%C3%B3n_fiscal
      *
      * @return string VAT Number
      */
-    public static function vat($spacedNationalPrefix = true)
+    public static function vat()
     {
-        $prefix = $spacedNationalPrefix ? 'BG ' : 'BG';
+        $letter = static::randomElement(self::$vatMap);
+        $number = static::numerify('########');
 
-        return sprintf(
-            '%s%d%d',
-            $prefix,
-            self::randomNumber(5, true), // workaround for mt_getrandmax() limitation
-            self::randomNumber(self::randomElement([4, 5]), true),
-        );
+        return $letter . $number;
     }
 }
