@@ -1,210 +1,340 @@
 <?php
 
-namespace Faker\Core;
+namespace Faker\Provider;
 
-use Faker\Extension\DateTimeExtension;
-use Faker\Extension\GeneratorAwareExtension;
-use Faker\Extension\GeneratorAwareExtensionTrait;
-use Faker\Extension\Helper;
-
-/**
- * @experimental This class is experimental and does not fall under our BC promise
- *
- * @since 1.20.0
- */
-final class DateTime implements DateTimeExtension, GeneratorAwareExtension
+class DateTime extends Base
 {
-    use GeneratorAwareExtensionTrait;
+    protected static $century = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
+
+    protected static $defaultTimezone = null;
 
     /**
-     * @var string[]
-     */
-    private array $centuries = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
-
-    private ?string $defaultTimezone = null;
-
-    /**
-     * Get the POSIX-timestamp of a DateTime, int or string.
-     *
-     * @param \DateTime|float|int|string $until
+     * @param \DateTime|float|int|string $max
      *
      * @return false|int
      */
-    private function getTimestamp($until = 'now')
+    protected static function getMaxTimestamp($max = 'now')
     {
-        if (is_numeric($until)) {
-            return (int) $until;
+        if (is_numeric($max)) {
+            return (int) $max;
         }
 
-        if ($until instanceof \DateTime) {
-            return $until->getTimestamp();
+        if ($max instanceof \DateTime) {
+            return $max->getTimestamp();
         }
 
-        return strtotime(empty($until) ? 'now' : $until);
+        return strtotime(empty($max) ? 'now' : $max);
     }
 
     /**
-     * Get a DateTime created based on a POSIX-timestamp.
+     * Get a timestamp between January 1, 1970, and now
      *
-     * @param int $timestamp the UNIX / POSIX-compatible timestamp
+     * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
+     *
+     * @return int
+     *
+     * @example 1061306726
      */
-    private function getTimestampDateTime(int $timestamp): \DateTime
+    public static function unixTime($max = 'now')
     {
-        return new \DateTime('@' . $timestamp);
-    }
-
-    private function resolveTimezone(?string $timezone): string
-    {
-        if ($timezone !== null) {
-            return $timezone;
-        }
-
-        return null === $this->defaultTimezone ? date_default_timezone_get() : $this->defaultTimezone;
+        return self::numberBetween(0, static::getMaxTimestamp($max));
     }
 
     /**
-     * Internal method to set the timezone on a DateTime object.
+     * Get a datetime object for a date between January 1, 1970 and now
+     *
+     * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
+     * @param string               $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     *
+     * @return \DateTime
+     *
+     * @see http://php.net/manual/en/timezones.php
+     * @see http://php.net/manual/en/function.date-default-timezone-get.php
+     *
+     * @example DateTime('2005-08-16 20:39:21')
      */
-    private function setTimezone(\DateTime $dateTime, ?string $timezone): \DateTime
+    public static function dateTime($max = 'now', $timezone = null)
     {
-        $timezone = $this->resolveTimezone($timezone);
-
-        return $dateTime->setTimezone(new \DateTimeZone($timezone));
-    }
-
-    public function dateTime($until = 'now', ?string $timezone = null): \DateTime
-    {
-        return $this->setTimezone(
-            $this->getTimestampDateTime($this->unixTime($until)),
+        return static::setTimezone(
+            new \DateTime('@' . static::unixTime($max)),
             $timezone,
         );
     }
 
-    public function dateTimeAD($until = 'now', ?string $timezone = null): \DateTime
+    /**
+     * Get a datetime object for a date between January 1, 001 and now
+     *
+     * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
+     * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     *
+     * @return \DateTime
+     *
+     * @see http://php.net/manual/en/timezones.php
+     * @see http://php.net/manual/en/function.date-default-timezone-get.php
+     *
+     * @example DateTime('1265-03-22 21:15:52')
+     */
+    public static function dateTimeAD($max = 'now', $timezone = null)
     {
-        $min = (PHP_INT_SIZE > 4) ? -62135597361 : -PHP_INT_MAX;
+        $min = (PHP_INT_SIZE > 4 ? -62135597361 : -PHP_INT_MAX);
 
-        return $this->setTimezone(
-            $this->getTimestampDateTime($this->generator->numberBetween($min, $this->getTimestamp($until))),
+        return static::setTimezone(
+            new \DateTime('@' . self::numberBetween($min, static::getMaxTimestamp($max))),
             $timezone,
         );
     }
 
-    public function dateTimeBetween($from = '-30 years', $until = 'now', ?string $timezone = null): \DateTime
+    /**
+     * get a date string formatted with ISO8601
+     *
+     * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example '2003-10-21T16:05:52+0000'
+     */
+    public static function iso8601($max = 'now')
     {
-        $start = $this->getTimestamp($from);
-        $end = $this->getTimestamp($until);
+        return static::date(\DateTime::ISO8601, $max);
+    }
 
-        if ($start > $end) {
-            throw new \InvalidArgumentException('"$from" must be anterior to "$until".');
+    /**
+     * Get a date string between January 1, 1970 and now
+     *
+     * @param string               $format
+     * @param \DateTime|int|string $max    maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example '2008-11-27'
+     */
+    public static function date($format = 'Y-m-d', $max = 'now')
+    {
+        return static::dateTime($max)->format($format);
+    }
+
+    /**
+     * Get a time string (24h format by default)
+     *
+     * @param string               $format
+     * @param \DateTime|int|string $max    maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example '15:02:34'
+     */
+    public static function time($format = 'H:i:s', $max = 'now')
+    {
+        return static::dateTime($max)->format($format);
+    }
+
+    /**
+     * Get a DateTime object based on a random date between two given dates.
+     * Accepts date strings that can be recognized by strtotime().
+     *
+     * @param \DateTime|string $startDate Defaults to 30 years ago
+     * @param \DateTime|string $endDate   Defaults to "now"
+     * @param string|null      $timezone  time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     *
+     * @return \DateTime
+     *
+     * @see http://php.net/manual/en/timezones.php
+     * @see http://php.net/manual/en/function.date-default-timezone-get.php
+     *
+     * @example DateTime('1999-02-02 11:42:52')
+     */
+    public static function dateTimeBetween($startDate = '-30 years', $endDate = 'now', $timezone = null)
+    {
+        $startTimestamp = $startDate instanceof \DateTime ? $startDate->getTimestamp() : strtotime($startDate);
+        $endTimestamp = static::getMaxTimestamp($endDate);
+
+        if ($startTimestamp > $endTimestamp) {
+            throw new \InvalidArgumentException('Start date must be anterior to end date.');
         }
 
-        $timestamp = $this->generator->numberBetween($start, $end);
+        $timestamp = self::numberBetween($startTimestamp, $endTimestamp);
 
-        return $this->setTimezone(
-            $this->getTimestampDateTime($timestamp),
+        return static::setTimezone(
+            new \DateTime('@' . $timestamp),
             $timezone,
         );
     }
 
-    public function dateTimeInInterval($from = '-30 years', string $interval = '+5 days', ?string $timezone = null): \DateTime
+    /**
+     * Get a DateTime object based on a random date between one given date and
+     * an interval
+     * Accepts date string that can be recognized by strtotime().
+     *
+     * @param \DateTime|string $date     Defaults to 30 years ago
+     * @param string           $interval Defaults to 5 days after
+     * @param string|null      $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     *
+     * @return \DateTime
+     *
+     * @example dateTimeInInterval('1999-02-02 11:42:52', '+ 5 days')
+     *
+     * @see http://php.net/manual/en/timezones.php
+     * @see http://php.net/manual/en/function.date-default-timezone-get.php
+     */
+    public static function dateTimeInInterval($date = '-30 years', $interval = '+5 days', $timezone = null)
     {
         $intervalObject = \DateInterval::createFromDateString($interval);
-        $datetime = $from instanceof \DateTime ? $from : new \DateTime($from);
+        $datetime = $date instanceof \DateTime ? $date : new \DateTime($date);
+        $otherDatetime = clone $datetime;
+        $otherDatetime->add($intervalObject);
 
-        $other = (clone $datetime)->add($intervalObject);
+        $begin = min($datetime, $otherDatetime);
+        $end = $datetime === $begin ? $otherDatetime : $datetime;
 
-        $begin = min($datetime, $other);
-        $end = $datetime === $begin ? $other : $datetime;
-
-        return $this->dateTimeBetween($begin, $end, $timezone);
+        return static::dateTimeBetween(
+            $begin,
+            $end,
+            $timezone,
+        );
     }
 
-    public function dateTimeThisWeek($until = 'sunday this week', ?string $timezone = null): \DateTime
+    /**
+     * Get a date time object somewhere within a century.
+     *
+     * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
+     * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     *
+     * @return \DateTime
+     */
+    public static function dateTimeThisCentury($max = 'now', $timezone = null)
     {
-        return $this->dateTimeBetween('monday this week', $until, $timezone);
+        return static::dateTimeBetween('-100 year', $max, $timezone);
     }
 
-    public function dateTimeThisMonth($until = 'last day of this month', ?string $timezone = null): \DateTime
+    /**
+     * Get a date time object somewhere within a decade.
+     *
+     * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
+     * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     *
+     * @return \DateTime
+     */
+    public static function dateTimeThisDecade($max = 'now', $timezone = null)
     {
-        return $this->dateTimeBetween('first day of this month', $until, $timezone);
+        return static::dateTimeBetween('-10 year', $max, $timezone);
     }
 
-    public function dateTimeThisYear($until = 'last day of december', ?string $timezone = null): \DateTime
+    /**
+     * Get a date time object somewhere inside the current year.
+     *
+     * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
+     * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     *
+     * @return \DateTime
+     */
+    public static function dateTimeThisYear($max = 'now', $timezone = null)
     {
-        return $this->dateTimeBetween('first day of january', $until, $timezone);
+        return static::dateTimeBetween('first day of january this year', $max, $timezone);
     }
 
-    public function dateTimeThisDecade($until = 'now', ?string $timezone = null): \DateTime
+    /**
+     * Get a date time object somewhere within a month.
+     *
+     * @param \DateTime|int|string $max      maximum timestamp used as random end limit, default to "now"
+     * @param string|null          $timezone time zone in which the date time should be set, default to DateTime::$defaultTimezone, if set, otherwise the result of `date_default_timezone_get`
+     *
+     * @return \DateTime
+     */
+    public static function dateTimeThisMonth($max = 'now', $timezone = null)
     {
-        $year = floor(date('Y') / 10) * 10;
-
-        return $this->dateTimeBetween("first day of january $year", $until, $timezone);
+        return static::dateTimeBetween('-1 month', $max, $timezone);
     }
 
-    public function dateTimeThisCentury($until = 'now', ?string $timezone = null): \DateTime
+    /**
+     * Get a string containing either "am" or "pm".
+     *
+     * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example 'am'
+     */
+    public static function amPm($max = 'now')
     {
-        $year = floor(date('Y') / 100) * 100;
-
-        return $this->dateTimeBetween("first day of january $year", $until, $timezone);
+        return static::dateTime($max)->format('a');
     }
 
-    public function date(string $format = 'Y-m-d', $until = 'now'): string
+    /**
+     * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example '22'
+     */
+    public static function dayOfMonth($max = 'now')
     {
-        return $this->dateTime($until)->format($format);
+        return static::dateTime($max)->format('d');
     }
 
-    public function time(string $format = 'H:i:s', $until = 'now'): string
+    /**
+     * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example 'Tuesday'
+     */
+    public static function dayOfWeek($max = 'now')
     {
-        return $this->date($format, $until);
+        return static::dateTime($max)->format('l');
     }
 
-    public function unixTime($until = 'now'): int
+    /**
+     * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example '7'
+     */
+    public static function month($max = 'now')
     {
-        return $this->generator->numberBetween(0, $this->getTimestamp($until));
+        return static::dateTime($max)->format('m');
     }
 
-    public function iso8601($until = 'now'): string
+    /**
+     * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example 'September'
+     */
+    public static function monthName($max = 'now')
     {
-        return $this->date(\DateTime::ISO8601, $until);
+        return static::dateTime($max)->format('F');
     }
 
-    public function amPm($until = 'now'): string
+    /**
+     * @param \DateTime|int|string $max maximum timestamp used as random end limit, default to "now"
+     *
+     * @return string
+     *
+     * @example '1987'
+     */
+    public static function year($max = 'now')
     {
-        return $this->date('a', $until);
+        return static::dateTime($max)->format('Y');
     }
 
-    public function dayOfMonth($until = 'now'): string
+    /**
+     * @return string
+     *
+     * @example 'XVII'
+     */
+    public static function century()
     {
-        return $this->date('d', $until);
+        return static::randomElement(static::$century);
     }
 
-    public function dayOfWeek($until = 'now'): string
-    {
-        return $this->date('l', $until);
-    }
-
-    public function month($until = 'now'): string
-    {
-        return $this->date('m', $until);
-    }
-
-    public function monthName($until = 'now'): string
-    {
-        return $this->date('F', $until);
-    }
-
-    public function year($until = 'now'): string
-    {
-        return $this->date('Y', $until);
-    }
-
-    public function century(): string
-    {
-        return Helper::randomElement($this->centuries);
-    }
-
-    public function timezone(?string $countryCode = null): string
+    /**
+     * @return string
+     *
+     * @example 'Europe/Paris'
+     */
+    public static function timezone(?string $countryCode = null)
     {
         if ($countryCode) {
             $timezones = \DateTimeZone::listIdentifiers(\DateTimeZone::PER_COUNTRY, $countryCode);
@@ -212,6 +342,48 @@ final class DateTime implements DateTimeExtension, GeneratorAwareExtension
             $timezones = \DateTimeZone::listIdentifiers();
         }
 
-        return Helper::randomElement($timezones);
+        return static::randomElement($timezones);
+    }
+
+    /**
+     * Internal method to set the time zone on a DateTime.
+     *
+     * @param string|null $timezone
+     *
+     * @return \DateTime
+     */
+    private static function setTimezone(\DateTime $dt, $timezone)
+    {
+        return $dt->setTimezone(new \DateTimeZone(static::resolveTimezone($timezone)));
+    }
+
+    /**
+     * Sets default time zone.
+     *
+     * @param string $timezone
+     */
+    public static function setDefaultTimezone($timezone = null)
+    {
+        static::$defaultTimezone = $timezone;
+    }
+
+    /**
+     * Gets default time zone.
+     *
+     * @return string|null
+     */
+    public static function getDefaultTimezone()
+    {
+        return static::$defaultTimezone;
+    }
+
+    /**
+     * @param string|null $timezone
+     *
+     * @return string|null
+     */
+    private static function resolveTimezone($timezone)
+    {
+        return (null === $timezone) ? ((null === static::$defaultTimezone) ? date_default_timezone_get() : static::$defaultTimezone) : $timezone;
     }
 }
