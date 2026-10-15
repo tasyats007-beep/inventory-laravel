@@ -1,114 +1,78 @@
-<p style="text-align: center"><img src="https://github.com/FakerPHP/Artwork/raw/main/src/socialcard.png" alt="Social card of FakerPHP"></p>
+# CORS for PHP (using the Symfony HttpFoundation)
 
-# Faker
+[![Unit Tests](https://github.com/fruitcake/php-cors/actions/workflows/run-tests.yml/badge.svg)](https://github.com/fruitcake/php-cors/actions)
+[![PHPStan Level 9](https://img.shields.io/badge/PHPStan-Level%2010-blue)](https://github.com/fruitcake/php-cors/actions)
+[![Code Coverage](https://img.shields.io/badge/CodeCoverage-100%25-brightgreen)](https://github.com/fruitcake/php-cors/actions/workflows/run-coverage.yml)
+[![Packagist License](https://img.shields.io/badge/Licence-MIT-blue)](http://choosealicense.com/licenses/mit/)
+[![Latest Stable Version](https://img.shields.io/packagist/v/fruitcake/php-cors?label=Stable)](https://packagist.org/packages/fruitcake/php-cors)
+[![Total Downloads](https://img.shields.io/packagist/dt/fruitcake/php-cors?label=Downloads)](https://packagist.org/packages/fruitcake/php-cors)
+[![Fruitcake](https://img.shields.io/badge/Powered%20By-Fruitcake-b2bc35.svg)](https://fruitcake.nl/)
 
-[![Packagist Downloads](https://img.shields.io/packagist/dm/FakerPHP/Faker)](https://packagist.org/packages/fakerphp/faker)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/FakerPHP/Faker/Tests/main)](https://github.com/FakerPHP/Faker/actions)
-[![Type Coverage](https://shepherd.dev/github/FakerPHP/Faker/coverage.svg)](https://shepherd.dev/github/FakerPHP/Faker)
-[![Code Coverage](https://codecov.io/gh/FakerPHP/Faker/branch/main/graph/badge.svg)](https://codecov.io/gh/FakerPHP/Faker)
+Library and middleware enabling cross-origin resource sharing for your
+http-{foundation,kernel} using application. It attempts to implement the
+[W3C Recommendation] for cross-origin resource sharing.
 
-Faker is a PHP library that generates fake data for you. Whether you need to bootstrap your database, create good-looking XML documents, fill-in your persistence to stress test it, or anonymize data taken from a production service, Faker is for you.
+[W3C Recommendation]: http://www.w3.org/TR/cors/
 
-It's heavily inspired by Perl's [Data::Faker](https://metacpan.org/pod/Data::Faker), and by Ruby's [Faker](https://rubygems.org/gems/faker).
+> Note: This is a standalone fork of https://github.com/asm89/stack-cors and is compatible with the options for CorsService.
+## Installation
 
-## Getting Started
+Require `fruitcake/php-cors` using composer.
 
-### Installation
+## Usage
 
-Faker requires PHP >= 7.4.
+This package can be used as a library. You can use it in your framework using:
 
-```shell
-composer require fakerphp/faker
-```
+ - [Stack middleware](http://stackphp.com/): https://github.com/asm89/stack-cors
+ - [Laravel](https://laravel.com): https://github.com/fruitcake/laravel-cors
+ 
 
-### Documentation
+### Options
 
-Full documentation can be found over on [fakerphp.github.io](https://fakerphp.github.io).
+| Option                 | Description                                                | Default value |
+|------------------------|------------------------------------------------------------|---------------|
+| allowedMethods         | Matches the request method.                                | `[]`          |
+| allowedOrigins         | Matches the request origin.                                | `[]`          |
+| allowedOriginsPatterns | Matches the request origin with `preg_match`.              | `[]`          |
+| allowedHeaders         | Sets the Access-Control-Allow-Headers response header.     | `[]`          |
+| exposedHeaders         | Sets the Access-Control-Expose-Headers response header.    | `[]`          |
+| maxAge                 | Sets the Access-Control-Max-Age response header.           | `0`           |
+| supportsCredentials    | Sets the Access-Control-Allow-Credentials header.          | `false`       |
 
-### Basic Usage
+The _allowedMethods_ and _allowedHeaders_ options are case-insensitive.
 
-Use `Faker\Factory::create()` to create and initialize a Faker generator, which can generate data by accessing methods named after the type of data you want.
+You don't need to provide both _allowedOrigins_ and _allowedOriginsPatterns_. If one of the strings passed matches, it is considered a valid origin. A wildcard in allowedOrigins will be converted to a pattern.
 
-```php
-<?php
-require_once 'vendor/autoload.php';
+If `['*']` is provided to _allowedMethods_, _allowedOrigins_ or _allowedHeaders_ all methods / origins / headers are allowed.
 
-// use the factory to create a Faker\Generator instance
-$faker = Faker\Factory::create();
-// generate data by calling methods
-echo $faker->name();
-// 'Vince Sporer'
-echo $faker->email();
-// 'walter.sophia@hotmail.com'
-echo $faker->text();
-// 'Numquam ut mollitia at consequuntur inventore dolorem.'
-```
+> Note: Allowing a single static origin will improve cacheability.
 
-Each call to `$faker->name()` yields a different (random) result. This is because Faker uses `__call()` magic, and forwards `Faker\Generator->$method()` calls to `Faker\Generator->format($method, $attributes)`.
-
-```php
-<?php
-for ($i = 0; $i < 3; $i++) {
-    echo $faker->name() . "\n";
-}
-
-// 'Cyrus Boyle'
-// 'Alena Cummerata'
-// 'Orlo Bergstrom'
-```
-
-## Automated refactoring
-
-If you already used this library with its properties, they are now deprecated and needs to be replaced by their equivalent methods.
-
-You can use the provided [Rector](https://github.com/rectorphp/rector) config file to automate the work.
-
-Run
-
-```bash
-composer require --dev rector/rector
-```
-
-to install `rector/rector`.
-
-Run
-
-```bash
-vendor/bin/rector process src/ --config vendor/fakerphp/faker/rector-migrate.php
-```
-
-to run `rector/rector`.
-
-*Note:* do not forget to replace `src/` with the path to your source directory.
-
-Alternatively, import the configuration in your `rector.php` file:
+### Example: using the library
 
 ```php
 <?php
 
-declare(strict_types=1);
+use Fruitcake\Cors\CorsService;
 
-use Rector\Config;
+$cors = new CorsService([
+    'allowedHeaders'         => ['x-allowed-header', 'x-other-allowed-header'],
+    'allowedMethods'         => ['DELETE', 'GET', 'POST', 'PUT'],
+    'allowedOrigins'         => ['http://localhost', 'https://*.example.com'],
+    'allowedOriginsPatterns' => ['/localhost:\d/'],
+    'exposedHeaders'         => ['Content-Encoding'],
+    'maxAge'                 => 0,
+    'supportsCredentials'    => false,
+]);
 
-return static function (Config\RectorConfig $rectorConfig): void {
-    $rectorConfig->import('vendor/fakerphp/faker/rector-migrate.php');
-};
+$cors->addActualRequestHeaders(Response $response, $origin);
+$cors->handlePreflightRequest(Request $request);
+$cors->isActualRequestAllowed(Request $request);
+$cors->isCorsRequest(Request $request);
+$cors->isPreflightRequest(Request $request);
 ```
 
 ## License
 
-Faker is released under the MIT License. See [`LICENSE`](LICENSE) for details.
+Released under the MIT License, see [LICENSE](LICENSE).
 
-## Backward compatibility promise
-
-Faker is using [Semver](https://semver.org/). This means that versions are tagged
-with MAJOR.MINOR.PATCH. Only a new major version will be allowed to break backward
-compatibility (BC).
-
-Classes marked as `@experimental` or `@internal` are not included in our backward compatibility promise.
-You are also not guaranteed that the value returned from a method is always the
-same. You are guaranteed that the data type will not change.
-
-PHP 8 introduced [named arguments](https://wiki.php.net/rfc/named_params), which
-increased the cost and reduces flexibility for package maintainers. The names of the
-arguments for methods in Faker is not included in our BC promise.
+> This package is split-off from https://github.com/asm89/stack-cors and developed as stand-alone library since 2022

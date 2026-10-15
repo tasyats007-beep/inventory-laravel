@@ -1,31 +1,69 @@
 <?php
 
-namespace Egulias\EmailValidator\Result;
+declare(strict_types=1);
 
-interface Result
+/*
+ * This file is part of Result Type.
+ *
+ * (c) Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace GrahamCampbell\ResultType;
+
+/**
+ * @template-covariant T
+ * @template-covariant E
+ */
+abstract class Result
 {
     /**
-     * Is validation result valid?
-     * 
+     * Get the success option value.
+     *
+     * @return \PhpOption\Option<T>
      */
-    public function isValid(): bool;
+    abstract public function success();
 
     /**
-     * Is validation result invalid?
-     * Usually the inverse of isValid()
-     * 
+     * Map over the success value.
+     *
+     * @template S
+     *
+     * @param callable(T):S $f
+     *
+     * @return \GrahamCampbell\ResultType\Result<S,E>
      */
-    public function isInvalid(): bool;
+    abstract public function map(callable $f);
 
     /**
-     * Short description of the result, human readable.
-     * 
+     * Flat map over the success value.
+     *
+     * @template S
+     * @template F
+     *
+     * @param callable(T):\GrahamCampbell\ResultType\Result<S,F> $f
+     *
+     * @return \GrahamCampbell\ResultType\Result<S,E|F>
      */
-    public function description(): string;
+    abstract public function flatMap(callable $f);
 
     /**
-     * Code for user land to act upon.
-     * 
+     * Get the error option value.
+     *
+     * @return \PhpOption\Option<E>
      */
-    public function code(): int;
+    abstract public function error();
+
+    /**
+     * Map over the error value.
+     *
+     * @template F
+     *
+     * @param callable(E):F $f
+     *
+     * @return \GrahamCampbell\ResultType\Result<T,F>
+     */
+    abstract public function mapError(callable $f);
 }

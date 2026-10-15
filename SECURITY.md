@@ -1,7 +1,12 @@
-# Security
+# Security Policy
 
-If you find a Security bug in Doctrine, please follow our
-[Security reporting guidelines](https://www.doctrine-project.org/policies/security.html#reporting).
+## Supported Versions
 
-Security vulnerabilities should be reported to security@doctrine-project.org
-and not posted on the GitHub issue tracker of the project.
+Only the latest released version of Whoops is supported.
+To facilitate upgrades we almost never make backwards-incompatible changes.
+
+## Reporting a Vulnerability
+
+Please report vulnerabilities over email, by sending an email to `denis` at `sokolov` dot `cc`.
+
+
