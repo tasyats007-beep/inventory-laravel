@@ -1,78 +1,76 @@
 <?php
-
-declare(strict_types=1);
+namespace Hamcrest;
 
 /*
- * This file is a part of dflydev/dot-access-data.
- *
- * (c) Dragonfly Development Inc.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ Copyright (c) 2012 hamcrest.org
  */
 
-namespace Dflydev\DotAccessData;
-
+/**
+ * Contains utility methods for handling Hamcrest matchers.
+ *
+ * @see Hamcrest\Matcher
+ */
 class Util
 {
-    /**
-     * Test if array is an associative array
-     *
-     * Note that this function will return true if an array is empty. Meaning
-     * empty arrays will be treated as if they are associative arrays.
-     *
-     * @param array<mixed> $arr
-     *
-     * @return bool
-     *
-     * @psalm-pure
-     */
-    public static function isAssoc(array $arr): bool
+    public static function registerGlobalFunctions(): void
     {
-        return !count($arr) || count(array_filter(array_keys($arr), 'is_string')) == count($arr);
+        require_once __DIR__.'/../Hamcrest.php';
     }
 
     /**
-     * Merge contents from one associtative array to another
+     * Wraps the item with an IsEqual matcher if it isn't a matcher already.
      *
-     * @param mixed $to
-     * @param mixed $from
-     * @param DataInterface::PRESERVE|DataInterface::REPLACE|DataInterface::MERGE $mode
-     *
-     * @return mixed
-     *
-     * @psalm-pure
+     * @param mixed $item matcher or any value
+     * @return \Hamcrest\Matcher
      */
-    public static function mergeAssocArray($to, $from, int $mode = DataInterface::REPLACE)
+    public static function wrapValueWithIsEqual($item)
     {
-        if ($mode === DataInterface::MERGE && self::isList($to) && self::isList($from)) {
-            return array_merge($to, $from);
-        }
+        return ($item instanceof Matcher)
+            ? $item
+            : Core\IsEqual::equalTo($item)
+            ;
+    }
 
-        if (is_array($from) && is_array($to)) {
-            foreach ($from as $k => $v) {
-                if (!isset($to[$k])) {
-                    $to[$k] = $v;
-                } else {
-                    $to[$k] = self::mergeAssocArray($to[$k], $v, $mode);
-                }
+    /**
+     * Throws an exception if any item in $matchers is not a Hamcrest\Matcher.
+     *
+     * @param array<mixed> $matchers expected to contain only matchers
+     * @throws \InvalidArgumentException if any item is not a matcher
+     */
+    public static function checkAllAreMatchers(array $matchers): void
+    {
+        foreach ($matchers as $m) {
+            if (!($m instanceof Matcher)) {
+                throw new \InvalidArgumentException(
+                    'Each argument or element must be a Hamcrest matcher'
+                );
             }
-
-            return $to;
         }
-
-        return $mode === DataInterface::PRESERVE ? $to : $from;
     }
 
     /**
-     * @param mixed $value
+     * Returns a copy of $items where each non-Matcher item is replaced by
+     * a Hamcrest\Core\IsEqual matcher for the item. If the first and only item
+     * is an array, it is used as the $items array to support the old style
+     * of passing an array as the sole argument to a matcher.
      *
-     * @return bool
-     *
-     * @psalm-pure
+     * @param array<mixed> $items contains items and matchers
+     * @return array<Matcher> all items are
      */
-    private static function isList($value): bool
+    public static function createMatcherArray(array $items)
     {
-        return is_array($value) && array_values($value) === $value;
+        //Extract single array item
+        if (count($items) == 1 && is_array($items[0])) {
+            $items = $items[0];
+        }
+
+        //Replace non-matchers
+        foreach ($items as &$item) {
+            if (!($item instanceof Matcher)) {
+                $item = Core\IsEqual::equalTo($item);
+            }
+        }
+
+        return $items;
     }
 }
