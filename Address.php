@@ -1,101 +1,137 @@
 <?php
 
-namespace Faker\Provider\es_ES;
+namespace Faker\Provider\ja_JP;
 
 class Address extends \Faker\Provider\Address
 {
-    protected static $cityPrefix = ['San', 'Vall', "L'", 'Villa', 'El', 'Los', 'La', 'Las', 'O', 'A', 'Os', 'As'];
-    protected static $citySuffix = ['del Vallès', 'del Penedès', 'del Bages', 'de Ulla', 'de Lemos', 'del Mirador', 'de Arriba', 'de la Sierra', 'del Barco', 'de San Pedro', 'del Pozo', 'del Puerto', 'de las Torres', 'Alta', 'Baja', 'Medio'];
-    protected static $buildingNumber = ['%##', '%#', '%'];
-    protected static $streetPrefix = [
-        'Calle', 'Avenida', 'Plaza', 'Paseo', 'Ronda', 'Travesía', 'Camino', 'Carrer', 'Avinguda', 'Plaça', 'Passeig', 'Travessera', 'Rúa', 'Praza', 'Ruela', 'Camiño',
-    ];
-    protected static $postcode = ['#####'];
-    protected static $community = [
-        'Andalucía', 'Aragón', 'Principado de Asturias', 'Illes Balears', 'Canarias', 'Cantabria', 'Castilla y León', 'Castilla - La Mancha', 'Cataluña', 'Comunitat Valenciana', 'Extremadura', 'Galicia', 'Comunidad de Madrid', 'Región de Murcia', 'Comunidad Foral de Navarra', 'País Vasco', 'La Rioja', 'Ceuta', 'Melilla',
-    ];
-    protected static $state = [
-        'A Coruña', 'Álava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Ávila', 'Badajoz', 'Barcelona', 'Burgos', 'Cáceres', 'Cádiz', 'Cantabria', 'Castellón', 'Ceuta', 'Ciudad Real', 'Cuenca', 'Córdoba', 'Girona', 'Granada', 'Guadalajara', 'Guipuzkoa', 'Huelva', 'Huesca', 'Illes Balears', 'Jaén', 'La Rioja', 'Las Palmas', 'León', 'Lleida', 'Lugo', 'Málaga', 'Madrid', 'Melilla', 'Murcia', 'Navarra', 'Ourense', 'Palencia', 'Pontevedra', 'Salamanca', 'Segovia', 'Sevilla', 'Soria', 'Santa Cruz de Tenerife', 'Tarragona', 'Teruel', 'Toledo', 'Valencia', 'Valladolid', 'Vizcaya', 'Zamora', 'Zaragoza',
-    ];
     protected static $country = [
-        'Afganistán', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Antigua y Barbuda', 'Arabia Saudí', 'Argelia', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaiyán',
-        'Bahamas', 'Bangladés', 'Barbados', 'Baréin', 'Belice', 'Benín', 'Bielorrusia', 'Birmania', 'Bolivia', 'Bosnia-Herzegovina', 'Botsuana', 'Brasil', 'Brunéi Darusalam', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Bután', 'Bélgica',
-        'Cabo Verde', 'Camboya', 'Camerún', 'Canadá', 'Catar', 'Chad', 'Chile', 'China', 'Chipre', 'Ciudad del Vaticano', 'Colombia', 'Comoras', 'Congo', 'Corea del Norte', 'Corea del Sur', 'Costa Rica', 'Costa de Marfil', 'Croacia', 'Cuba',
-        'Dinamarca', 'Dominica',
-        'Ecuador', 'Egipto', 'El Salvador', 'Emiratos Árabes Unidos', 'Eritrea', 'Eslovaquia', 'Eslovenia', 'España', 'Estados Unidos de América', 'Estonia', 'Etiopía',
-        'Filipinas', 'Finlandia', 'Fiyi', 'Francia',
-        'Gabón', 'Gambia', 'Georgia', 'Ghana', 'Granada', 'Grecia', 'Guatemala', 'Guinea', 'Guinea Ecuatorial', 'Guinea-Bisáu', 'Guyana',
-        'Haití', 'Honduras', 'Hungría',
-        'India', 'Indonesia', 'Irak', 'Irlanda', 'Irán', 'Islandia', 'Islas Marshall', 'Islas Salomón', 'Israel', 'Italia',
-        'Jamaica', 'Japón', 'Jordania',
-        'Kazajistán', 'Kenia', 'Kirguistán', 'Kiribati', 'Kuwait',
-        'Laos', 'Lesoto', 'Letonia', 'Liberia', 'Libia', 'Liechtenstein', 'Lituania', 'Luxemburgo', 'Líbano',
-        'Macedonia', 'Madagascar', 'Malasia', 'Malaui', 'Maldivas', 'Mali', 'Malta', 'Marruecos', 'Mauricio', 'Mauritania', 'Micronesia', 'Moldavia', 'Mongolia', 'Montenegro', 'Mozambique', 'México', 'Mónaco',
-        'Namibia', 'Nauru', 'Nepal', 'Nicaragua', 'Nigeria', 'Noruega', 'Nueva Zelanda', 'Níger',
-        'Omán',
-        'Pakistán', 'Palaos', 'Panamá', 'Papúa Nueva Guinea', 'Paraguay', 'Países Bajos', 'Perú', 'Polonia', 'Portugal',
-        'Reino Unido', 'Reino Unido de Gran Bretaña e Irlanda del Norte', 'República Centroafricana', 'República Checa', 'República Democrática del Congo', 'República Dominicana', 'Ruanda', 'Rumanía', 'Rusia',
-        'Samoa', 'San Cristóbal y Nieves', 'San Marino', 'San Vicente y las Granadinas', 'Santa Lucía', 'Santo Tomé y Príncipe', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leona', 'Singapur', 'Siria', 'Somalia', 'Sri Lanka', 'Suazilandia', 'Sudáfrica', 'Sudán', 'Suecia', 'Suiza', 'Surinam',
-        'Tailandia', 'Tanzania', 'Tayikistán', 'Timor Oriental', 'Togo', 'Tonga', 'Trinidad y Tobago', 'Turkmenistán', 'Turquía', 'Tuvalu', 'Túnez',
-        'Ucrania', 'Uganda', 'Uruguay', 'Uzbekistán',
-        'Vanuatu', 'Venezuela', 'Vietnam',
-        'Yemen', 'Yibuti',
-        'Zambia', 'Zimbabue',
+        'アフガニスタン', 'アルバニア', 'アルジェリア', 'アメリカ領サモア', 'アンドラ', 'アンゴラ', 'アンギラ', '南極大陸', 'アンティグアバーブーダ', 'アルゼンチン', 'アルメニア', 'アルバ', 'オーストラリア', 'オーストリア', 'アゼルバイジャン',
+        'バハマ', 'バーレーン', 'バングラデシュ', 'バルバドス', 'ベラルーシ', 'ベルギー', 'ベリーズ', 'ベナン', 'バミューダ島', 'ブータン', 'ボリビア', 'ボスニア・ヘルツェゴビナ', 'ボツワナ', 'ブーベ島', 'ブラジル', 'イギリス領インド洋地域', 'イギリス領ヴァージン諸島', 'ブルネイ', 'ブルガリア', 'ブルキナファソ', 'ブルンジ',
+        'カンボジア', 'カメルーン', 'カナダ', 'カーボベルデ', 'ケイマン諸島', '中央アフリカ共和国', 'チャド', 'チリ', '中国', 'クリスマス島', 'ココス諸島', 'コロンビア', 'コモロ', 'コンゴ共和国', 'クック諸島', 'コスタリカ', 'コートジボワール', 'クロアチア', 'キューバ', 'キプロス共和国', 'チェコ共和国',
+        'デンマーク', 'ジブチ共和国', 'ドミニカ国', 'ドミニカ共和国',
+        'エクアドル', 'エジプト', 'エルサルバドル', '赤道ギニア共和国', 'エリトリア', 'エストニア', 'エチオピア',
+        'フェロー諸島', 'フォークランド諸島', 'フィジー共和国', 'フィンランド', 'フランス', 'フランス領ギアナ', 'フランス領ポリネシア', 'フランス領極南諸島',
+        'ガボン', 'ガンビア', 'ジョージア', 'ドイツ', 'ガーナ', 'ジブラルタル', 'ギリシャ', 'グリーンランド', 'グレナダ', 'グアドループ', 'グアム', 'グアテマラ', 'ガーンジー', 'ギニア', 'ギニアビサウ', 'ガイアナ',
+        'ハイチ', 'ハード島とマクドナルド諸島', 'バチカン市国', 'ホンジュラス', '香港', 'ハンガリー',
+        'アイスランド', 'インド', 'インドネシア', 'イラン', 'イラク', 'アイルランド共和国', 'マン島', 'イスラエル', 'イタリア',
+        'ジャマイカ', '日本', 'ジャージー島', 'ヨルダン',
+        'カザフスタン', 'ケニア', 'キリバス', '朝鮮', '韓国', 'クウェート', 'キルギス共和国',
+        'ラオス人民民主共和国', 'ラトビア', 'レバノン', 'レソト', 'リベリア', 'リビア国', 'リヒテンシュタイン', 'リトアニア', 'ルクセンブルク',
+        'マカオ', 'マケドニア共和国', 'マダガスカル', 'マラウィ', 'マレーシア', 'モルディブ', 'マリ', 'マルタ共和国', 'マーシャル諸島', 'マルティニーク', 'モーリタニア・イスラム共和国', 'モーリシャス', 'マヨット', 'メキシコ', 'ミクロネシア連邦', 'モルドバ共和国', 'モナコ公国', 'モンゴル', 'モンテネグロ共和国', 'モントセラト', 'モロッコ', 'モザンビーク', 'ミャンマー',
+        'ナミビア', 'ナウル', 'ネパール', 'オランダ領アンティル', 'オランダ', 'ニューカレドニア', 'ニュージーランド', 'ニカラグア', 'ニジェール', 'ナイジェリア', 'ニース', 'ノーフォーク島', '北マリアナ諸島', 'ノルウェー',
+        'オマーン',
+        'パキスタン', 'パラオ', 'パレスチナ自治区', 'パナマ', 'パプアニューギニア', 'パラグアイ', 'ペルー', 'フィリピン', 'ピトケアン諸島', 'ポーランド', 'ポルトガル', 'プエルトリコ',
+        'カタール',
+        'レユニオン', 'ルーマニア', 'ロシア', 'ルワンダ',
+        'サン・バルテルミー島', 'セントヘレナ', 'セントクリストファー・ネイビス連邦', 'セントルシア', 'セント・マーチン島', 'サンピエール島・ミクロン島', 'セントビンセント・グレナディーン', 'サモア', 'サンマリノ', 'サントメプリンシペ', 'サウジアラビア', 'セネガル', 'セルビア', 'セイシェル', 'シエラレオネ', 'シンガポール', 'スロバキア', 'スロベニア', 'ソロモン諸島', 'ソマリア', '南アフリカ共和国', 'サウスジョージア・サウスサンドウィッチ諸島', 'スペイン', 'スリランカ', 'スーダン', 'スリナム', 'スヴァールバル諸島およびヤンマイエン島', 'スワジランド王国', 'スウェーデン', 'スイス', 'シリア',
+        '台湾', 'タジキスタン共和国', 'タンザニア', 'タイ', '東ティモール', 'トーゴ', 'トケラウ', 'トンガ', 'トリニダード・トバゴ', 'チュニジア', 'トルコ', 'トルクメニスタン', 'タークス・カイコス諸島', 'ツバル',
+        'ウガンダ', 'ウクライナ', 'アラブ首長国連邦', 'イギリス', 'アメリカ合衆国', '合衆国領有小離島', 'アメリカ領ヴァージン諸島', 'ウルグアイ', 'ウズベキスタン',
+        'バヌアツ', 'ベネズエラ', 'ベトナム',
+        'ウォリス・フツナ', '西サハラ',
+        'イエメン',
+        'ザンビア', 'ジンバブエ',
     ];
+    protected static $prefecture = [
+        '北海道',
+        '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県',
+        '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県',
+        '新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県',
+        '三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県',
+        '鳥取県', '島根県', '岡山県', '広島県', '山口県',
+        '徳島県', '香川県', '愛媛県', '高知県',
+        '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県',
+        '沖縄県',
+    ];
+    protected static $ward = ['中央', '北', '東', '南', '西'];
+
+    protected static $citySuffix = ['市'];
+    protected static $wardSuffix = ['区'];
+    protected static $streetSuffix = ['町'];
+
+    protected static $postcodeFormats = ['{{postcode1}}{{postcode2}}'];
     protected static $cityFormats = [
-        '{{cityPrefix}} {{lastName}} {{citySuffix}}',
-        '{{cityPrefix}} {{lastName}}',
-        '{{lastName}} {{citySuffix}}',
+        '{{lastName}}{{citySuffix}}',
     ];
     protected static $streetNameFormats = [
-        '{{streetPrefix}} {{firstName}}',
-        '{{streetPrefix}} {{lastName}}',
+        '{{lastName}}{{streetSuffix}}',
     ];
     protected static $streetAddressFormats = [
-        '{{streetName}}, {{buildingNumber}}, {{secondaryAddress}}',
+        '{{streetName}}{{lastName}}{{areaNumber}}-{{areaNumber}}-{{areaNumber}}',
     ];
     protected static $addressFormats = [
-        '{{streetAddress}}, {{postcode}}, {{city}}',
+        '{{postcode}}  {{prefecture}}{{city}}{{ward}}{{streetAddress}}',
+        '{{postcode}}  {{prefecture}}{{city}}{{ward}}{{streetAddress}} {{secondaryAddress}}',
     ];
-    protected static $secondaryAddressFormats = ['Bajos', 'Ático #º', 'Entre suelo #º', 'Bajo #º', '#º', '#º A', '#º B', '#º C', '#º D', '#º E', '#º F', '##º A', '##º B', '##º C', '##º D', '##º E', '##º F', '#º #º', '##º #º'];
+    protected static $secondaryAddressFormats = [
+        'ハイツ{{lastName}}{{buildingNumber}}号',
+        'コーポ{{lastName}}{{buildingNumber}}号',
+    ];
 
     /**
-     * @example 'Avenida'
+     * @example 111
      */
-    public static function streetPrefix()
+    public static function postcode1()
     {
-        return static::randomElement(static::$streetPrefix);
+        return self::numberBetween(100, 999);
     }
 
     /**
-     * @example 'Villa'
+     * @example 2222
      */
-    public static function cityPrefix()
+    public static function postcode2()
     {
-        return static::randomElement(static::$cityPrefix);
+        return self::numberBetween(1000, 9999);
     }
 
     /**
-     * @example '3ºA'
+     * @example 1112222
      */
-    public static function secondaryAddress()
+    public static function postcode()
     {
-        return static::numerify(static::randomElement(static::$secondaryAddressFormats));
+        $postcode1 = static::postcode1();
+        $postcode2 = static::postcode2();
+
+        return $postcode1 . $postcode2;
     }
 
     /**
-     * @example 'Barcelona'
+     * @example '東京都'
      */
-    public static function state()
+    public static function prefecture()
     {
-        return static::randomElement(static::$state);
+        return static::randomElement(static::$prefecture);
     }
 
     /**
-     * @example 'Comunidad de Madrid'
+     * @example '北区'
      */
-    public static function community()
+    public static function ward()
     {
-        return static::randomElement(static::$community);
+        $ward = static::randomElement(static::$ward);
+        $suffix = static::randomElement(static::$wardSuffix);
+
+        return $ward . $suffix;
+    }
+
+    /**
+     * 丁、番地、号
+     *
+     * @return int
+     */
+    public static function areaNumber()
+    {
+        return self::numberBetween(1, 10);
+    }
+
+    public static function buildingNumber()
+    {
+        return (string) self::numberBetween(101, 110);
+    }
+
+    public function secondaryAddress()
+    {
+        $format = static::randomElement(static::$secondaryAddressFormats);
+
+        return $this->generator->parse($format);
     }
 }

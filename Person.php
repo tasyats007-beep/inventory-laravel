@@ -1,149 +1,147 @@
 <?php
 
-namespace Faker\Provider\es_ES;
+namespace Faker\Provider\ja_JP;
 
 class Person extends \Faker\Provider\Person
 {
-    private static $crcMap = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E', 'T'];
-
     protected static $maleNameFormats = [
-        '{{firstNameMale}} {{lastName}}',
-        '{{firstNameMale}} {{lastName}}',
-        '{{firstNameMale}} {{lastName}}',
-        '{{firstNameMale}} {{lastName}}',
-        '{{titleMale}} {{firstNameMale}} {{lastName}}',
-        '{{titleMale}} {{firstNameMale}} {{lastName}} {{suffix}}',
-        '{{firstNameMale}} {{lastName}} {{suffix}}',
+        '{{lastName}} {{firstNameMale}}',
     ];
 
     protected static $femaleNameFormats = [
-        '{{firstNameFemale}} {{lastName}}',
-        '{{firstNameFemale}} {{lastName}}',
-        '{{firstNameFemale}} {{lastName}}',
-        '{{firstNameFemale}} {{lastName}}',
-        '{{titleFemale}} {{firstNameFemale}} {{lastName}}',
-        '{{firstNameFemale}} {{lastName}} {{suffix}}',
-        '{{titleFemale}} {{firstNameFemale}} {{lastName}} {{suffix}}',
+        '{{lastName}} {{firstNameFemale}}',
     ];
 
     /**
-     * {@link} http://www.ine.es/daco/daco42/nombyapel/nombyapel.htm
-     * {@link} http://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177009&menu=ultiDatos&idp=1254734710990
-     * Manually added accent marks because the source lacks of them
+     * {@link} http://dic.nicovideo.jp/a/%E6%97%A5%E6%9C%AC%E4%BA%BA%E3%81%AE%E5%90%8D%E5%89%8D%E4%B8%80%E8%A6%A7
+     * {@link} http://www.meijiyasuda.co.jp/enjoy/ranking/
      */
     protected static $firstNameMale = [
-        'Aaron', 'Adam', 'Adrián', 'Aitor', 'Alberto', 'Aleix', 'Alejandro', 'Alex', 'Alonso', 'Álvaro', 'Ander', 'Andrés', 'Ángel', 'Antonio', 'Arnau', 'Asier',
-        'Biel', 'Bruno',
-        'Carlos', 'César', 'Cristian',
-        'Daniel', 'Dario', 'David', 'Diego',
-        'Eduardo', 'Enrique', 'Eric', 'Erik',
-        'Fernando', 'Francisco', 'Francisco Javier',
-        'Gabriel', 'Gael', 'Gerard', 'Gonzalo', 'Guillem', 'Guillermo',
-        'Héctor', 'Hugo',
-        'Ian', 'Ignacio',
-        'Iker', 'Isaac', 'Ismael', 'Iván', 'Izan',
-        'Jaime', 'Jan', 'Javier', 'Jesús', 'Joel', 'Jon', 'Jordi', 'Jorge', 'José', 'José Antonio', 'José Manuel', 'Juan', 'Juan José',
-        'Leo', 'Lucas', 'Luis',
-        'Manuel', 'Marc', 'Marco', 'Marcos', 'Mario', 'Martín', 'Mateo', 'Miguel', 'Miguel Ángel',
-        'Nicolás',
-        'Oliver', 'Omar', 'Oriol', 'Óscar',
-        'Pablo', 'Pedro', 'Pol',
-        'Rafael', 'Raúl', 'Rayan', 'Roberto', 'Rodrigo', 'Rubén',
-        'Samuel', 'Santiago', 'Saúl', 'Sergio',
-        'Unai',
-        'Víctor',
-        'Yago', 'Yeray',
+        '晃', '篤司', '治', '和也', '京助', '健一', '修平', '翔太', '淳', '聡太郎', '太一', '太郎', '拓真', '翼', '智也',
+        '直樹', '直人', '英樹', '浩', '学', '充', '稔', '裕樹', '裕太', '康弘', '陽一', '洋介', '亮介', '涼平', '零',
     ];
 
+    /**
+     * {@link} http://dic.nicovideo.jp/a/%E6%97%A5%E6%9C%AC%E4%BA%BA%E3%81%AE%E5%90%8D%E5%89%8D%E4%B8%80%E8%A6%A7
+     * {@link} http://www.meijiyasuda.co.jp/enjoy/ranking/
+     */
     protected static $firstNameFemale = [
-        'Abril', 'Adriana', 'África', 'Aina', 'Ainara', 'Ainhoa', 'Aitana', 'Alba', 'Alejandra', 'Alexandra', 'Alexia', 'Alicia', 'Alma', 'Amparo', 'Ana', 'Ana Isabel', 'Ana María', 'Andrea',  'Ángela', 'Ángeles', 'Antonia', 'Ariadna', 'Aurora',
-        'Beatriz', 'Berta', 'Blanca',
-        'Candela', 'Carla', 'Carlota', 'Carmen', 'Carolina', 'Celia', 'Clara', 'Claudia', 'Cristina',
-        'Daniela', 'Diana',
-        'Elena', 'Elsa', 'Emilia', 'Encarnación', 'Eva', 'Esther',
-        'Fátima', 'Francisca',
-        'Gabriela', 'Gloria',
-        'Helena',
-        'Inés', 'Inmaculada', 'Irene',  'Isabel',
-        'Josefa', 'Jimena', 'Juana', 'Julia',
-        'Laia', 'Lara', 'Laura', 'Leire', 'Lorena', 'Lidia', 'Lola', 'Lucía', 'Luisa', 'Luna',
-        'Malak', 'Manuela', 'Mar', 'Mara', 'Margarita', 'María', 'María Ángeles', 'María Carmen', 'María Dolores', 'María Pilar', 'Marina', 'Marta',  'Martina', 'Mireia', 'Miriam',
-        'Nadia', 'Nahia', 'Naia', 'Naiara', 'Natalia', 'Nayara', 'Nerea', 'Nil', 'Noa', 'Noelia', 'Nora', 'Nuria',
-        'Olivia', 'Olga', 'Ona',
-        'Paola', 'Patricia', 'Pau', 'Paula', 'Pilar',
-        'Raquel', 'Rocío', 'Rosa', 'Rosa María', 'Rosario',
-        'Salma', 'Sandra', 'Sara', 'Silvia', 'Sofía', 'Sonia',
-        'Teresa',
-        'Úrsula',
-        'Valentina', 'Valeria', 'Vega', 'Vera', 'Verónica', 'Victoria',
-        'Yaiza', 'Yolanda',
-        'Zoe',
+        '明美', 'あすか', '香織', '加奈', 'くみ子', 'さゆり', '知実', '千代',
+        '直子', '七夏', '花子', '春香', '真綾', '舞', '美加子', '幹', '桃子', '結衣', '裕美子', '陽子', '里佳',
     ];
 
+    /**
+     * {@link} http://dic.nicovideo.jp/a/%E6%97%A5%E6%9C%AC%E3%81%AE%E8%8B%97%E5%AD%97%28%E5%90%8D%E5%AD%97%29%E3%81%AE%E4%B8%80%E8%A6%A7
+     */
     protected static $lastName = [
-        'Abad', 'Abeyta', 'Abrego', 'Abreu', 'Acevedo', 'Acosta', 'Acuña', 'Adame', 'Adorno', 'Agosto', 'Aguado', 'Aguayo', 'Aguilar', 'Aguilera', 'Aguirre', 'Alanis', 'Alaniz', 'Alarcón', 'Alba', 'Alcala', 'Alcaráz', 'Alcántar', 'Alejandro', 'Alemán', 'Alfaro', 'Alfonso', 'Alicea', 'Almanza', 'Almaráz', 'Almonte', 'Alonso', 'Alonzo', 'Altamirano', 'Alva', 'Alvarado', 'Álvarez', 'Amador', 'Amaya', 'Anaya', 'Andreu', 'Andrés', 'Anguiano', 'Angulo', 'Antón', 'Aparicio', 'Apodaca', 'Aponte', 'Aragón', 'Aranda', 'Araña', 'Arce', 'Archuleta', 'Arellano', 'Arenas', 'Arevalo', 'Arguello', 'Arias', 'Armas', 'Armendáriz', 'Armenta', 'Armijo', 'Arredondo', 'Arreola', 'Arriaga', 'Arribas', 'Arroyo', 'Arteaga', 'Asensio', 'Atencio', 'Ávalos', 'Ávila', 'Avilés', 'Ayala', 'Baca', 'Badillo', 'Baeza', 'Bahena', 'Balderas',
-        'Ballesteros', 'Banda', 'Barajas', 'Barela', 'Barragán', 'Barraza', 'Barrera', 'Barreto', 'Barrientos', 'Barrios', 'Barroso', 'Batista', 'Bautista', 'Bañuelos', 'Becerra', 'Beltrán', 'Benavides', 'Benavídez', 'Benito', 'Benítez', 'Bermejo', 'Bermúdez', 'Bernal', 'Berríos', 'Blanco', 'Blasco', 'Blázquez', 'Bonilla', 'Borrego', 'Botello', 'Bravo', 'Briones', 'Briseño', 'Brito', 'Bueno', 'Burgos', 'Bustamante', 'Bustos', 'Báez', 'Betancourt',
-        'Caballero', 'Cabello', 'Cabrera', 'Cabán', 'Cadena', 'Caldera', 'Calderón', 'Calero', 'Calvillo', 'Calvo', 'Camacho', 'Camarillo', 'Campos', 'Canales', 'Candelaria', 'Cano', 'Cantú', 'Caraballo', 'Carbajal', 'Carballo', 'Carbonell', 'Cárdenas', 'Cardona', 'Carmona', 'Caro', 'Carranza', 'Carrasco', 'Carrasquillo', 'Carrera', 'Carrero', 'Carretero', 'Carreón', 'Carrillo', 'Carrión', 'Carvajal', 'Casado', 'Casanova', 'Casares', 'Casas', 'Casillas', 'Castañeda', 'Castaño', 'Castellano', 'Castellanos', 'Castillo', 'Castro', 'Casárez', 'Cavazos', 'Cazares', 'Ceballos', 'Cedillo', 'Ceja', 'Centeno', 'Cepeda', 'Cerda', 'Cervantes', 'Cervántez', 'Chacón', 'Chapa', 'Chavarría', 'Chávez', 'Cintrón', 'Cisneros', 'Clemente', 'Cobo', 'Collado', 'Collazo', 'Colunga', 'Colón', 'Concepción', 'Conde', 'Contreras', 'Cordero', 'Cornejo', 'Corona', 'Coronado', 'Corral', 'Corrales', 'Correa', 'Cortés', 'Cortez', 'Cortés', 'Costa', 'Cotto', 'Covarrubias', 'Crespo', 'Cruz', 'Cuellar', 'Cuenca', 'Cuesta', 'Cuevas', 'Curiel', 'Córdoba', 'Córdova',
-        'De Anda', 'De Jesús', 'De la Cruz', 'De la Fuente', 'De la Torre', 'Del Río', 'Delacrúz', 'Delafuente', 'Delagarza', 'Delao', 'Delapaz', 'Delarosa', 'Delatorre', 'Deleón', 'Delgadillo', 'Delgado', 'Delrío', 'Delvalle', 'Díez', 'Domenech', 'Domingo', 'Domínguez', 'Domínquez', 'Duarte', 'Dueñas', 'Duran', 'Dávila', 'Díaz',
-        'Echevarría', 'Elizondo', 'Enríquez', 'Escalante', 'Escamilla', 'Escobar', 'Escobedo', 'Escribano', 'Escudero', 'Esparza', 'Espinal', 'Espino', 'Espinosa', 'Espinoza', 'Esquibel', 'Esquivel', 'Esteban', 'Esteve', 'Estrada', 'Estévez', 'Expósito',
-        'Fajardo', 'Farías', 'Feliciano', 'Fernández', 'Ferrer', 'Fierro', 'Figueroa', 'Flores', 'Flórez', 'Fonseca', 'Font', 'Franco', 'Frías', 'Fuentes',
-        'Gaitán', 'Galarza', 'Galindo', 'Gallardo', 'Gallego', 'Gallegos', 'Galván', 'Galán', 'Gamboa', 'Gámez', 'Gaona', 'Garay', 'García', 'Garibay', 'Garica', 'Garrido', 'Garza', 'Gastélum', 'Gaytán', 'Gil', 'Gimeno', 'Giménez', 'Girón', 'Godoy', 'Godínez', 'Gonzáles', 'González', 'Gracia', 'Granado', 'Granados', 'Griego', 'Grijalva', 'Guajardo', 'Guardado', 'Guerra', 'Guerrero', 'Guevara', 'Guillen', 'Gurule', 'Gutiérrez', 'Guzmán', 'Gálvez', 'Gómez',
-        'Haro', 'Henríquez', 'Heredia', 'Hernándes', 'Hernando', 'Hernádez', 'Hernández', 'Herrera', 'Herrero', 'Hidalgo', 'Hinojosa', 'Holguín', 'Huerta', 'Hurtado',
-        'Ibarra', 'Ibáñez', 'Iglesias', 'Irizarry', 'Izquierdo',
-        'Jaime', 'Jaimes', 'Jaramillo', 'Jasso', 'Jiménez', 'Jimínez', 'Juan', 'Jurado', 'Juárez', 'Jáquez',
-        'Laboy', 'Lara', 'Laureano', 'Leal', 'Lebrón', 'Ledesma', 'Leiva', 'Lemus', 'Lerma', 'Leyva', 'León', 'Limón', 'Linares', 'Lira', 'Llamas', 'Llorente', 'Loera', 'Lomeli', 'Longoria', 'Lorente', 'Lorenzo', 'Lovato', 'Loya', 'Lozada', 'Lozano', 'Lucas', 'Lucero', 'Lucio', 'Luevano', 'Lugo', 'Luis', 'Luján', 'Luna', 'Luque', 'Lázaro', 'López',
-        'Macias', 'Macías', 'Madera', 'Madrid', 'Madrigal', 'Maestas', 'Magaña', 'Malave', 'Maldonado', 'Manzanares', 'Manzano', 'Marco', 'Marcos', 'Mares', 'Marrero', 'Marroquín', 'Martos', 'Martí', 'Martín', 'Martínez', 'Marín', 'Más', 'Mascareñas', 'Mata', 'Mateo', 'Mateos', 'Matos', 'Matías', 'Maya', 'Mayorga', 'Medina', 'Medrano', 'Mejía', 'Melgar', 'Meléndez', 'Mena', 'Menchaca', 'Mendoza', 'Menéndez', 'Meraz', 'Mercado', 'Merino', 'Mesa', 'Meza', 'Miguel', 'Millán', 'Miramontes', 'Miranda', 'Mireles', 'Mojica', 'Molina', 'Mondragón', 'Monroy', 'Montalvo', 'Montañez', 'Montaño', 'Montemayor', 'Montenegro', 'Montero', 'Montes', 'Montez', 'Montoya', 'Mora', 'Moral', 'Morales', 'Morán', 'Moreno', 'Mota', 'Moya', 'Munguía', 'Murillo', 'Muro', 'Muñiz', 'Muñoz', 'Márquez', 'Méndez',
-        'Naranjo', 'Narváez', 'Nava', 'Navarrete', 'Navarro', 'Navas', 'Nazario', 'Negrete', 'Negrón', 'Nevárez', 'Nieto', 'Nieves', 'Niño', 'Noriega', 'Nájera', 'Núñez',
-        'Ocampo', 'Ocasio', 'Ochoa', 'Ojeda', 'Oliva', 'Olivares', 'Olivas', 'Oliver', 'Olivera', 'Olivo', 'Olivárez', 'Olmos', 'Olvera', 'Ontiveros', 'Oquendo', 'Ordoñez', 'Ordóñez', 'Orellana', 'Ornelas', 'Orosco', 'Orozco', 'Orta', 'Ortega', 'Ortíz', 'Osorio', 'Otero', 'Ozuna',
-        'Pabón', 'Pacheco', 'Padilla', 'Padrón', 'Pagan', 'Palacios', 'Palomino', 'Palomo', 'Pantoja', 'Pardo', 'Paredes', 'Parra', 'Partida', 'Pascual', 'Pastor', 'Patiño', 'Paz', 'Pedraza', 'Pedroza', 'Pelayo', 'Peláez', 'Perales', 'Peralta', 'Perea', 'Pereira', 'Peres', 'Peña', 'Pichardo', 'Pineda', 'Pizarro', 'Piña', 'Piñeiro', 'Plaza', 'Polanco', 'Polo', 'Ponce', 'Pons', 'Porras', 'Portillo', 'Posada', 'Pozo', 'Prado', 'Preciado', 'Prieto', 'Puente', 'Puga', 'Puig', 'Pulido', 'Páez', 'Pérez',
-        'Quesada', 'Quezada', 'Quintana', 'Quintanilla', 'Quintero', 'Quiroz', 'Quiñones', 'Quiñónez',
-        'Rael', 'Ramos', 'Ramírez', 'Ramón', 'Rangel', 'Rascón', 'Raya', 'Razo', 'Redondo', 'Regalado', 'Reina', 'Rendón', 'Rentería', 'Requena', 'Reséndez', 'Rey', 'Reyes', 'Reyna', 'Reynoso', 'Rico', 'Riera', 'Rincón', 'Riojas', 'Rivas', 'Rivera', 'Rivero', 'Robledo', 'Robles', 'Roca', 'Rocha', 'Rodarte', 'Rodrigo', 'Rodríguez', 'Rodríquez', 'Roig', 'Rojas', 'Rojo', 'Roldán', 'Rolón', 'Romero', 'Romo', 'Román', 'Roque', 'Ros', 'Rosa', 'Rosado', 'Rosales', 'Rosario', 'Rosas', 'Roybal', 'Rubio', 'Rueda', 'Ruelas', 'Ruiz', 'Ruvalcaba', 'Ruíz', 'Ríos',
-        'Saavedra', 'Saiz', 'Salas', 'Salazar', 'Salcedo', 'Salcido', 'Saldaña', 'Saldivar', 'Salgado', 'Salinas', 'Salvador', 'Samaniego', 'Sanabria', 'Sánchez', 'Sancho', 'Sandoval', 'Santacruz', 'Santamaría', 'Santana', 'Santiago', 'Santillán', 'Santos', 'Sanz', 'Sarabia', 'Sauceda', 'Saucedo', 'Sedillo', 'Segovia', 'Segura', 'Sepúlveda', 'Serna', 'Serra', 'Serrano', 'Serrato', 'Sevilla', 'Sierra', 'Silva', 'Simón', 'Sisneros', 'Sola', 'Solano', 'Soler', 'Soliz', 'Solorio', 'Solorzano', 'Solís', 'Soria', 'Soriano', 'Sosa', 'Sotelo', 'Soto', 'Suárez', 'Sáenz', 'Sáez', 'Sánchez',
-        'Tafoya', 'Tamayo', 'Tamez', 'Tapia', 'Tejada', 'Tejeda', 'Tello', 'Terrazas', 'Terán', 'Tijerina', 'Tirado', 'Toledo', 'Toro', 'Torres', 'Tovar', 'Trejo', 'Treviño', 'Trujillo', 'Téllez', 'Tórrez',
-        'Ulibarri', 'Ulloa', 'Urbina', 'Ureña', 'Uribe', 'Urrutia', 'Urías',
-        'Vaca', 'Valadez', 'Valdez', 'Valdivia', 'Valdés', 'Valencia', 'Valentín', 'Valenzuela', 'Valero', 'Valladares', 'Valle', 'Vallejo', 'Valles', 'Valverde', 'Vanegas', 'Varela', 'Vargas', 'Vega', 'Vela', 'Velasco', 'Velásquez', 'Velázquez', 'Venegas', 'Vera', 'Verdugo', 'Verduzco', 'Vergara', 'Vicente', 'Vidal', 'Viera', 'Vigil', 'Vila', 'Villa', 'Villagómez', 'Villalba', 'Villalobos', 'Villalpando', 'Villanueva', 'Villar', 'Villareal', 'Villarreal', 'Villaseñor', 'Villegas', 'Vásquez', 'Vázquez', 'Vélez', 'Véliz',
-        'Ybarra', 'Yáñez',
-        'Zambrano', 'Zamora', 'Zamudio', 'Zapata', 'Zaragoza', 'Zarate', 'Zavala', 'Zayas', 'Zelaya', 'Zepeda', 'Zúñiga',
+        '青田', '青山', '石田', '井高', '伊藤', '井上', '宇野', '江古田', '大垣',
+        '加藤', '加納', '喜嶋', '木村', '桐山', '工藤', '小泉', '小林', '近藤',
+        '斉藤', '坂本', '佐々木', '佐藤', '笹田', '鈴木', '杉山',
+        '高橋', '田中', '田辺', '津田',
+        '中島', '中村', '渚', '中津川', '西之園', '野村',
+        '原田', '浜田', '廣川', '藤本',
+        '松本', '三宅', '宮沢', '村山',
+        '山岸', '山口', '山田', '山本', '吉田', '吉本',
+        '若松', '渡辺',
     ];
 
-    protected static $titleMale = ['Sr.', 'D.', 'Dr.', 'Lic.', 'Ing.'];
+    protected static $firstKanaNameFormat = [
+        '{{firstKanaNameMale}}',
+        '{{firstKanaNameFemale}}',
+    ];
 
-    protected static $titleFemale = ['Sra.', 'Srta.', 'Dña', 'Dr.', 'Lic.', 'Ing.'];
+    protected static $maleKanaNameFormats = [
+        '{{lastKanaName}} {{firstKanaNameMale}}',
+    ];
 
-    private static $suffix = ['Hijo', 'Segundo', 'Tercero'];
+    protected static $femaleKanaNameFormats = [
+        '{{lastKanaName}} {{firstKanaNameFemale}}',
+    ];
 
-    protected static $licenceCodes = ['AM', 'A1', 'A2', 'A', 'B', 'B+E', 'C1', 'C1+E', 'C', 'C+E', 'D1', 'D1+E', 'D', 'D+E'];
+    protected static $firstKanaNameMale = [
+        'アキラ', 'アツシ', 'オサム', 'カズヤ', 'キョウスケ', 'ケンイチ', 'シュウヘイ', 'ショウタ', 'ジュン', 'ソウタロウ',
+        'タイチ', 'タロウ', 'タクマ', 'ツバサ', 'トモヤ', 'ナオキ', 'ナオト', 'ヒデキ', 'ヒロシ', 'マナブ', 'ミツル', 'ミノル',
+        'ユウキ', 'ユウタ', 'ヤスヒロ', 'ヨウイチ', 'ヨウスケ', 'リョウスケ', 'リョウヘイ', 'レイ',
+    ];
+
+    protected static $firstKanaNameFemale = [
+        'アケミ', 'アスカ', 'カオリ', 'カナ', 'クミコ', 'サユリ', 'サトミ', 'チヨ',
+        'ナオコ', 'ナナミ', 'ハナコ', 'ハルカ', 'マアヤ', 'マイ', 'ミカコ', 'ミキ', 'モモコ', 'ユイ', 'ユミコ', 'ヨウコ', 'リカ',
+    ];
+
+    protected static $lastKanaName = [
+        'アオタ', 'アオヤマ', 'イシダ', 'イダカ', 'イトウ', 'ウノ', 'エコダ', 'オオガキ',
+        'カノウ', 'カノウ', 'キジマ', 'キムラ', 'キリヤマ', 'クドウ', 'コイズミ', 'コバヤシ', 'コンドウ',
+        'サイトウ', 'サカモト', 'ササキ', 'サトウ', 'ササダ', 'スズキ', 'スギヤマ',
+        'タカハシ', 'タナカ', 'タナベ', 'ツダ',
+        'ナカジマ', 'ナカムラ', 'ナギサ', 'ナカツガワ', 'ニシノソノ', 'ノムラ',
+        'ハラダ', 'ハマダ', 'ヒロカワ', 'フジモト',
+        'マツモト', 'ミヤケ', 'ミヤザワ', 'ムラヤマ',
+        'ヤマギシ', 'ヤマグチ', 'ヤマダ', 'ヤマモト', 'ヨシダ', 'ヨシモト',
+        'ワカマツ', 'ワタナベ',
+    ];
 
     /**
-     * @example 'Hijo'
-     */
-    public static function suffix()
-    {
-        return static::randomElement(static::$suffix);
-    }
-
-    /**
-     * Generate a Documento Nacional de Identidad (DNI) number
-     *
-     * @example '77446565E'
-     *
-     * @see https://es.wikibooks.org/wiki/Algoritmo_para_obtener_la_letra_del_NIF#Algoritmo
-     */
-    public static function dni()
-    {
-        $number = static::numerify('########');
-        $letter = self::$crcMap[$number % 23];
-
-        return $number . $letter;
-    }
-
-    /**
-     * @see https://sede.dgt.gob.es/es/tramites-y-multas/permiso-de-conduccion/obtencion-permiso-licencia-conduccion/clases-permiso-conduccion-edad.shtml
+     * @param string|null $gender 'male', 'female' or null for any
      *
      * @return string
+     *
+     * @example 'アオタ アキラ'
      */
-    public function licenceCode()
+    public function kanaName($gender = null)
     {
-        return static::randomElement(static::$licenceCodes);
+        if ($gender === static::GENDER_MALE) {
+            $format = static::randomElement(static::$maleKanaNameFormats);
+        } elseif ($gender === static::GENDER_FEMALE) {
+            $format = static::randomElement(static::$femaleKanaNameFormats);
+        } else {
+            $format = static::randomElement(array_merge(static::$maleKanaNameFormats, static::$femaleKanaNameFormats));
+        }
+
+        return $this->generator->parse($format);
+    }
+
+    /**
+     * @param string|null $gender 'male', 'female' or null for any
+     *
+     * @return string
+     *
+     * @example 'アキラ'
+     */
+    public function firstKanaName($gender = null)
+    {
+        if ($gender === static::GENDER_MALE) {
+            return static::firstKanaNameMale();
+        }
+
+        if ($gender === static::GENDER_FEMALE) {
+            return static::firstKanaNameFemale();
+        }
+
+        return $this->generator->parse(static::randomElement(static::$firstKanaNameFormat));
+    }
+
+    /**
+     * @example 'アキラ'
+     */
+    public static function firstKanaNameMale()
+    {
+        return static::randomElement(static::$firstKanaNameMale);
+    }
+
+    /**
+     * @example 'アケミ'
+     */
+    public static function firstKanaNameFemale()
+    {
+        return static::randomElement(static::$firstKanaNameFemale);
+    }
+
+    /**
+     * @example 'アオタ'
+     */
+    public static function lastKanaName()
+    {
+        return static::randomElement(static::$lastKanaName);
     }
 }
