@@ -1,168 +1,110 @@
-# CHANGELOG
+# Changelog
 
-## v2.18.0
+All notable changes to `uri-template` will be documented in this file.
 
-* Line numbers are now clickable.
+Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## v2.17.0
+## v1.0.11 - 2026-08-24
 
-* Support cursor IDE.
+### Added
 
-## v2.16.0
+- Added support for PHP 8.6
 
-* Support PHP `8.4`.
-* Drop support for PHP older than `7.1`.
+## v1.0.10 - 2026-07-17
 
-## v2.15.4
+### Fixed
 
-* Improve link color in comments.
+- Fixed prefix modifiers counting Unicode code points and pct-encoded characters instead of bytes
 
-## v2.15.3
+## v1.0.9 - 2026-07-08
 
-* Improve performance of the syntax highlighting (#758).
+### Changed
 
-## v2.15.2
+- Pass explicit trim characters ahead of the PHP 8.6 trim default change
 
-* Fixed missing code highlight, which additionally led to issue with switching tabs, between application and all frames ([#747](https://github.com/filp/whoops/issues/747)).
+## v1.0.8 - 2026-06-23
 
-## v2.15.1
+### Fixed
 
-* Fixed bug with PrettyPageHandler "*Calling `getFrameFilters` method on null*" ([#751](https://github.com/filp/whoops/pull/751)).
+- Report PCRE errors when URI template value encoding fails
 
-## v2.15.0
+## v1.0.7 - 2026-06-12
 
-* Add addFrameFilter ([#749](https://github.com/filp/whoops/pull/749))
+### Fixed
 
-## v2.14.6
+- Fixed the operator's leading character being omitted when defined variables expand to empty strings
+- Fixed non-finite float values emitting coercion warnings on PHP 8.5
 
-* Upgraded prismJS to version `1.29.0` due to security issue ([#741][i741]).
+## v1.0.6 - 2026-05-23
 
-[i741]: https://github.com/filp/whoops/pull/741
+### Fixed
 
-## v2.14.5
+- Fixed empty nested arrays adding empty components to exploded query expansions
+- Fixed nested query array keys being double-encoded during exploded query expansion
+- Fixed reserved and fragment expansion preserving existing pct-encoded triplets in variable values
 
-* Allow `ArrayAccess` on super globals.
+## v1.0.5 - 2025-08-22
 
-## v2.14.4
+### Changed
 
-* Fix PHP `5.5` support.
-* Allow to use psr/log `2` or `3`.
+- Officially support PHP 8.5
 
-## v2.14.3
+## v1.0.4 - 2025-02-03
 
-* Support PHP `8.1`.
+### Changed
 
-## v2.14.1
+- Officially support PHP 8.4
 
-* Fix syntax highlighting scrolling too far.
-* Improve the way we detect xdebug linkformat.
+## v1.0.3 - 2023-12-03
 
-## v2.14.0
+### Changed
 
-* Switched syntax highlighting to Prism.js.
+- Updated link to RFC 6570
 
-Avoids licensing issues with prettify, and uses a maintained, modern project.
+## v1.0.2 - 2023-08-27
 
-## v2.13.0
+### Changed
 
-* Add Netbeans editor.
+- Officially support PHP 8.2 and 8.3
 
-## v2.12.1
+### Fixed
 
-* Avoid redirecting away from an error.
+- Fixed using `0` as an expanded value
 
-## v2.12.0
+## v1.0.1 - 2021-10-07
 
-* Hide non-string values in super globals when requested.
+### Changed
 
-## v2.11.0
+- Officially support PHP 8.1
 
-* Customize exit code.
+## v1.0.0 - 2021-08-14
 
-## v2.10.0
+### Changed
 
-* Better chaining on handler classes.
+- Dropped support for PHP 7.1
 
-## v2.9.2
+## v0.2.0 - 2020-07-21
 
-* Fix copy button styles.
+### Added
 
-## v2.9.1
+- Support PHP 7.1 and 8.0
 
-* Fix xdebug function crash on PHP `8`.
+### Changed
 
-## v2.9.0
+- Renamed `GuzzleHttp\Utility\` to `GuzzleHttp\UriTemplate\`
 
-* `JsonResponseHandler` includes the exception code.
+### Fixed
 
-## v2.8.0
+- Delegate RFC 3986 query string encoding to PHP
+- Fixed some bugs when parts ofs values are not strings
 
-* Support PHP 8.
+## v0.1.1 - 2020-06-30
 
-## v2.7.3
+### Fixed
 
-* `PrettyPageHandler` functionality to hide superglobal keys has a clearer name 
-(`hideSuperglobalKey`).
+- Fixed an error due to strict_types [d47d1b0a8e78a3fac1cd0f69d675fc9e06771ac8](https://github.com/guzzle/uri-template/commit/d47d1b0a8e78a3fac1cd0f69d675fc9e06771ac8)
 
-## v2.7.2
+## v0.1.0 - 2020-06-30
 
-* `PrettyPageHandler` now accepts custom js files.
-* `PrettyPageHandler` and `templateHelper` is now accessible through inheritance.
-
-## v2.7.1
-
-* Fix a PHP warning in some cases with anonymous classes.
-
-## v2.7.0
-
-* Added `removeFirstHandler` and `removeLastHandler`.
-
-## v2.6.0
-
-* Fix 2.4.0 `pushHandler` changing the order of handlers.
-
-## v2.5.1
-
-* Fix error messaging in a rare case.
-
-## v2.5.0
-
-* Automatically configure xdebug if available.
-
-## v2.4.1
-
-* Try harder to close all output buffers.
-
-## v2.4.0
-
-* Allow to prepend and append handlers.
-
-## v2.3.2
-
-* Various fixes from the community.
-
-## v2.3.1
-
-* Prevent exception in Whoops when caught exception frame is not related to real file.
-
-## v2.3.0
-
-* Show previous exception messages.
-
-## v2.2.0
-
-* Support PHP `7.2`.
-
-## v2.1.0
-
-* Add a `SystemFacade` to allow clients to override Whoops behavior.
-* Show frame arguments in `PrettyPageHandler`.
-* Highlight the line with the error.
-* Add icons to search on Google and Stack Overflow.
-
-## v2.0.0
-
-Backwards compatibility breaking changes:
-
-* `Run` class is now `final`. If you inherited from `Run`, please now instead use a custom `SystemFacade` injected into the `Run` constructor, or contribute your changes to our core.
-* PHP < 5.5 support dropped.
+### Added
+- Moved the `UriTemplate` class in this package
